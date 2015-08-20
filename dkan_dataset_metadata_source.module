@@ -1,0 +1,109 @@
+<?php
+/**
+ * @file
+ * Code for the DKAN Dataset Metadata Source feature.
+ */
+
+include_once 'dkan_dataset_metadata_source.features.inc';
+include_once 'dkan_dataset_metadata_source.theme.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function dkan_dataset_metadata_source_menu() {
+  $items = array();
+  $items['node/%node/metadata'] = array(
+    'title' => 'Add Metadata',
+    'page callback' => 'dkan_dataset_metadata_source_add_metadata',
+    'page arguments' => array(1),
+    'access callback' => 'dkan_dataset_metadata_source_add_metadata_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'file path' => $path,
+  );
+  return $items;
+}
+
+
+/**
+ * Access callback for 'Add Metadata' tab.
+ */
+function dkan_dataset_metadata_source_add_metadata_access($node) {
+  if ($node->type != 'dataset') {
+    return FALSE;
+  }
+  elseif (node_hook($node->type, 'form') && node_access('create', $node->type)) {
+    return TRUE;
+  }
+  else {
+   return FALSE;
+  }
+}
+
+
+/**
+ * Callback for 'Add Resouce' tab.
+ */
+function dkan_dataset_metadata_source_add_metadata($node) {
+  drupal_goto('node/add/metadata', array('query' => array('dataset' => $node->nid)));
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function dkan_dataset_metadata_source_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'metadata_node_form') {
+    if ($query = drupal_get_query_parameters()) {
+      $field_dataset_ref_langcode = dkan_dataset_form_field_language($form, 'field_dataset_metadata_ref');
+      if (isset($query['dataset'])) {
+        $form['field_dataset_metadata_ref'][$field_dataset_ref_langcode]['#default_value'] = $query['dataset'];
+        $form['actions']['submit']['#submit'][] = 'dkan_dataset_metadata_metadata_node_form_submit';
+      }
+    }
+  }
+}
+
+function dkan_dataset_metadata_metadata_node_form_submit($form, &$form_state) {
+  if ($query = drupal_get_query_parameters()) {
+    if (isset($query['dataset'])) {
+      $form_state['redirect'] = 'node/' . $query['dataset'];
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function dkan_dataset_metadata_source_node_view($node, $view_mode, $langcode) {
+  if ($view_mode == 'full' && $node->type == 'dataset') {
+
+    $node->content['metadata_sources'] = array(
+      '#theme' => 'dkan_dataset_metadata_source_view',
+      '#node' => $node,
+      '#enabled' => TRUE,
+      '#prefix' => '<div id="metadata-sources">',
+      '#suffix' => '</div>',
+      '#view_mode' => $view_mode,
+      '#weight' => 8,
+    );
+  }
+}
+
+/**
+ * Implements hook_taxonomy_fixtures_vocabulary().
+ */
+function dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary() {
+  $module_path = drupal_get_path('module', 'dkan_dataset_metadata_source');
+  $map =  array(
+    'name' => 'name',
+    'weight' => 'weight',
+    'uuid' => 'uuid',
+  );
+
+  return array(
+    'extended_metadata_schema' => array(
+      'export_path' => $module_path . '/data',
+      'map' => $map,
+    ),
+  );
+}

@@ -1,0 +1,23 @@
+<?php
+/**
+ * Implements hook_install().
+ */
+function dkan_dataset_metadata_source_install() {
+  $features_to_revert = array(
+    'dkan_dataset_metadata_source',
+  );
+  foreach ($features_to_revert as $feature_name) {
+    $feature = features_get_features($feature_name);
+    $components = array_keys($feature->info['features']);
+    features_revert(array($feature_name => $components));
+  }
+
+  $vocabulary = dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary();
+  taxonomy_fixtures_import_terms($vocabulary);
+
+  $t = get_t();
+  drupal_set_message(
+    $t('Metadata Schema terms imported.'),
+    'status'
+  );
+}
