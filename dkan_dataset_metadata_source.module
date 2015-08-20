@@ -90,20 +90,29 @@ function dkan_dataset_metadata_source_node_view($node, $view_mode, $langcode) {
 }
 
 /**
+ * Returns configuration for harvest sources.
+ */
+function dkan_dataset_metadata_source_taxonomy_fixtures_sources_definition() {
+  $modules = module_implements('metadata_taxonomy_sources');
+  $subscribed_values = array();
+  foreach ($modules as $module) {
+    $function = $module . '_metadata_taxonomy_sources';
+    $values = $function();
+    foreach ($values as $key => $value) {
+      // Make sure other module didn't provide the same source.
+      if (!isset($subscribed_values[$key])) {
+        $subscribed_values[$key] = $value;
+      }
+    }
+  }
+  return $subscribed_values;
+}
+
+/**
  * Implements hook_taxonomy_fixtures_vocabulary().
  */
 function dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary() {
-  $module_path = drupal_get_path('module', 'dkan_dataset_metadata_source');
-  $map =  array(
-    'name' => 'name',
-    'weight' => 'weight',
-    'uuid' => 'uuid',
-  );
-
-  return array(
-    'extended_metadata_schema' => array(
-      'export_path' => $module_path . '/data',
-      'map' => $map,
-    ),
-  );
+  if ($sources = taxonomy_fixtures_sources_definition) {
+    return $sources;
+  }
 }

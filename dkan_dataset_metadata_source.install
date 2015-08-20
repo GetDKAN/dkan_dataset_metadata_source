@@ -12,12 +12,15 @@ function dkan_dataset_metadata_source_install() {
     features_revert(array($feature_name => $components));
   }
 
-  $vocabulary = dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary();
-  taxonomy_fixtures_import_terms($vocabulary);
+  if ($vocabs = dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary()) {
+    foreach ($vocabs as $vocab) {
+      taxonomy_fixtures_import_terms($vocab);
+      $t = get_t();
+      drupal_set_message(
+        $t('Metadata Schema terms imported.'),
+        'status'
+      );
+    }
+  }
 
-  $t = get_t();
-  drupal_set_message(
-    $t('Metadata Schema terms imported.'),
-    'status'
-  );
 }

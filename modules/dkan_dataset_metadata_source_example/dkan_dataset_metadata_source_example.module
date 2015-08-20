@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Example metadata inclusion.
+ */
+
+/**
+ * Implements hook_metadata_taxonomy_sources().
+ */
+function dkan_dataset_metadata_source_example_metadata_taxonomy_sources() {
+  $module_path = drupal_get_path('module', 'dkan_dataset_metadata_source_example');
+  $map =  array(
+    'name' => 'name',
+    'weight' => 'weight',
+  );
+  return array(
+    'taxonomy_machine_name' => array(
+      'export_path' => $module_path . '/data',
+      'map' => $map,
+    ),
+  );
+}
