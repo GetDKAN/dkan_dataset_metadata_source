@@ -1,0 +1,18 @@
+#metadata-sources ul.metadata-source-list li {
+  position: relative;
+  display: block;
+  padding: 0 175px 0 45px;
+  margin: 1em 0;
+  min-height: 60px;
+}
+#metadata-sources ul.metadata-source-list div.contextual-links-processed li  {
+  position: relative;
+  display: block;
+  padding: 0;
+  margin: auto;
+  min-height: auto;
+}
+#metadata-sources ul.metadata-source-list li span.links .btn {
+  margin: 0 0 0 10px;
+}
+

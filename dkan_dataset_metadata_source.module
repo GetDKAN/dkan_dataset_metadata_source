@@ -19,7 +19,6 @@ function dkan_dataset_metadata_source_menu() {
     'access callback' => 'dkan_dataset_metadata_source_add_metadata_access',
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
-    'file path' => $path,
   );
   return $items;
 }
@@ -61,6 +60,7 @@ function dkan_dataset_metadata_source_form_alter(&$form, &$form_state, $form_id)
       }
     }
   }
+  $form['#attached']['js'][] = drupal_get_path('module', 'dkan_dataset_metadata_source') . '/dkan_dataset_metadata_source.js';
 }
 
 function dkan_dataset_metadata_metadata_node_form_submit($form, &$form_state) {
@@ -76,6 +76,7 @@ function dkan_dataset_metadata_metadata_node_form_submit($form, &$form_state) {
  */
 function dkan_dataset_metadata_source_node_view($node, $view_mode, $langcode) {
   if ($view_mode == 'full' && $node->type == 'dataset') {
+    $path = array(drupal_get_path('module', 'dkan_dataset_metadata_source') . '/dkan_dataset_metadata_source.css');
 
     $node->content['metadata_sources'] = array(
       '#theme' => 'dkan_dataset_metadata_source_view',
@@ -85,6 +86,9 @@ function dkan_dataset_metadata_source_node_view($node, $view_mode, $langcode) {
       '#suffix' => '</div>',
       '#view_mode' => $view_mode,
       '#weight' => 8,
+      '#attached' => array(
+        'css' => $path
+      ),
     );
   }
 }

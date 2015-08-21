@@ -38,16 +38,22 @@ function theme_dkan_dataset_metadata_source_view($vars) {
         continue;
       }
       $metadata_source_wrapper = entity_metadata_wrapper('node', $metadata_source);
+      $type = 'data';
+      if (isset($metadata_source->field_metadata_file['und'][0]['filemime'])) {
+        $filemime = $metadata_source->field_metadata_file['und'][0]['filemime'];
+        $type = recline_get_data_type($filemime);
+      }
+      $icon = '<span data-toggle="tooltip" class="format-label" property="dc:format" data-original-title="' . $type . '" data-format="' . $type. '">' . $type  . '</span>';
+
 
       if (isset($metadata_source->field_metadata_schema) && $metadata_source->field_metadata_schema && $metadata_source_wrapper->field_metadata_schema->value()) {
-        $term .= '<span class="format-label" property="dc:format" data-format="' . $metadata_source_wrapper->field_metadata_schema->value()->name . '">' . $metadata_source_wrapper->field_metadata_schema->value()->name  . '</span>';
+        $title = t("@type Metadata", array("@type" => $metadata_source_wrapper->field_metadata_schema->value()->name));
       }
       else {
-        $term = '<span class="format-label" property="dc:format" data-format="data">Metadata</span>';
+        $title = t("%type Metadata", array("%type" => $metadata_source_wrapper->title->value()));
       }
       $view_url = NULL;
       $view_link = '';
-      $title = $metadata_source_wrapper->title->value();
       if (isset($metadata_source->field_metadata_view[LANGUAGE_NONE])) {
         $view_url = $metadata_source->field_metadata_view[LANGUAGE_NONE][0]['url'];
         $view_link = l(
@@ -93,7 +99,7 @@ function theme_dkan_dataset_metadata_source_view($vars) {
         $edit_link = l(t('Edit source'), 'node/' . $metadata_source->nid . '/edit', array('query' => array('destination' => 'node/' . $node->getIdentifier())));
         $contextual = '<div style="position:relative; float:right" class="contextual-links-wrapper"><ul class="contextual-links"><li class="0 first last"><li>' . $edit_link . '</li></ul></div>';
       }
-      $links[] = $dcat . $contextual . $title . $term . $desc . '<span class="links">' . $view_link . $download_link . '</span></div>';
+      $links[] = $dcat . $contextual . $title . $icon . '<span class="links">' . $view_link . $download_link . '</span></div>';
     }
     $output .= theme('item_list', array('items' => $links, 'attributes' => array('class' => array('metadata-source-list'))));
     // Close first dcat declaration.
