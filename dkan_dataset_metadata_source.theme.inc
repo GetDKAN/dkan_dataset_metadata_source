@@ -68,7 +68,7 @@ function theme_dkan_dataset_metadata_source_view($vars) {
             ),
           )
         );
-        $title = l($metadata_source_wrapper->title->value(), $view_url, array(
+        $title = l($title, $view_url, array(
           'html' => TRUE,
           'attributes' => array(
             'class' => array('heading'),
