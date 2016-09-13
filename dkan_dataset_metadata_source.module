@@ -116,7 +116,5 @@ function dkan_dataset_metadata_source_taxonomy_fixtures_sources_definition() {
  * Implements hook_taxonomy_fixtures_vocabulary().
  */
 function dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary() {
-  if ($sources = taxonomy_fixtures_sources_definition) {
-    return $sources;
-  }
+  return dkan_dataset_metadata_source_taxonomy_fixtures_sources_definition();
 }
