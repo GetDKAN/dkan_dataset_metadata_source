@@ -10,7 +10,7 @@
 function dkan_dataset_metadata_source_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-dataset-field_metadata_sources'
+  // Exported field_instance: 'node-dataset-field_metadata_sources'.
   $field_instances['node-dataset-field_metadata_sources'] = array(
     'bundle' => 'dataset',
     'default_value' => NULL,
@@ -22,6 +22,12 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 14,
+      ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -50,7 +56,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-metadata-field_dataset_metadata_ref'
+  // Exported field_instance: 'node-metadata-field_dataset_metadata_ref'.
   $field_instances['node-metadata-field_dataset_metadata_ref'] = array(
     'bundle' => 'metadata',
     'default_value' => NULL,
@@ -64,7 +70,13 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 6,
+        'weight' => 5,
+      ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -87,11 +99,11 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'apply_chosen' => 1,
       ),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 6,
     ),
   );
 
-  // Exported field_instance: 'node-metadata-field_metadata_file'
+  // Exported field_instance: 'node-metadata-field_metadata_file'.
   $field_instances['node-metadata-field_metadata_file'] = array(
     'bundle' => 'metadata',
     'deleted' => 0,
@@ -103,6 +115,12 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'settings' => array(),
         'type' => 'file_default',
         'weight' => 3,
+      ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -120,6 +138,9 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'file_directory' => 'metadata',
       'file_extensions' => 'txt xml json csv xsd iso',
       'max_filesize' => '',
+      'resup' => 0,
+      'resup_autostart' => 0,
+      'resup_max_filesize' => '',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -151,11 +172,57 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
-  // Exported field_instance: 'node-metadata-field_metadata_schema'
+  // Exported field_instance: 'node-metadata-field_metadata_json_schema'.
+  $field_instances['node-metadata-field_metadata_json_schema'] = array(
+    'bundle' => 'metadata',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 6,
+      ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_metadata_json_schema',
+    'label' => 'JSON Schema',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-metadata-field_metadata_schema'.
   $field_instances['node-metadata-field_metadata_schema'] = array(
     'bundle' => 'metadata',
     'default_value' => NULL,
@@ -167,7 +234,13 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 2,
+        'weight' => 0,
+      ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -191,11 +264,11 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
-  // Exported field_instance: 'node-metadata-field_metadata_view'
+  // Exported field_instance: 'node-metadata-field_metadata_view'.
   $field_instances['node-metadata-field_metadata_view'] = array(
     'bundle' => 'metadata',
     'default_value' => NULL,
@@ -209,6 +282,12 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'type' => 'link_default',
         'weight' => 4,
       ),
+      'search_result' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -221,6 +300,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'label' => 'Metadata View',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -234,6 +314,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'value',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => 'View Full Metadata',
       'url' => 0,
@@ -245,13 +326,14 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 2,
+      'weight' => 13,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
   t('Dataset');
+  t('JSON Schema');
   t('Metadata File');
   t('Metadata Sources');
   t('Metadata View');

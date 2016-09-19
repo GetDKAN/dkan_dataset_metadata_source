@@ -10,21 +10,13 @@
 function dkan_dataset_metadata_source_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_dataset_metadata_ref'
+  // Exported field_base: 'field_dataset_metadata_ref'.
   $field_bases['field_dataset_metadata_ref'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_dataset_metadata_ref',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -54,21 +46,13 @@ function dkan_dataset_metadata_source_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_metadata_file'
+  // Exported field_base: 'field_metadata_file'.
   $field_bases['field_metadata_file'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_metadata_file',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -85,21 +69,34 @@ function dkan_dataset_metadata_source_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_metadata_schema'
+  // Exported field_base: 'field_metadata_json_schema'.
+  $field_bases['field_metadata_json_schema'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_metadata_json_schema',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
+  // Exported field_base: 'field_metadata_schema'.
   $field_bases['field_metadata_schema'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_metadata_schema',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -119,21 +116,13 @@ function dkan_dataset_metadata_source_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_metadata_sources'
+  // Exported field_base: 'field_metadata_sources'.
   $field_bases['field_metadata_sources'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_metadata_sources',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -163,14 +152,13 @@ function dkan_dataset_metadata_source_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_metadata_view'
+  // Exported field_base: 'field_metadata_view'.
   $field_bases['field_metadata_view'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_metadata_view',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'link',

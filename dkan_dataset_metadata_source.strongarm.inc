@@ -59,6 +59,9 @@ function dkan_dataset_metadata_source_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'search_result' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -66,7 +69,7 @@ function dkan_dataset_metadata_source_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '7',
         ),
       ),
       'display' => array(),

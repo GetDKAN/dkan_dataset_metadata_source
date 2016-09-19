@@ -27,5 +27,6 @@ function dkan_dataset_metadata_source_node_info() {
       'help' => t('Give metadata sources specific, descriptive titles such as "ISO-19139 Metadata" or "Original FGDC Metadata"'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
