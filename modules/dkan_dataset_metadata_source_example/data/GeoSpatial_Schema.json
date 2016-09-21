@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "mapProject": {
+        "type": "string",
+        "title": "Map Projection",
+        "description": "Name of the map projection"
+      },
+      "westCoord": {
+        "type": "number",
+        "title": "West Bounding Coordinate",
+        "description": "Western-most coordinate of the limit of coverage expressed in longitude."
+      },
+      "eastCoord": {
+        "type": "number",
+        "title": "East Bounding Coordinate",
+        "description": "Eastern-most coordinate of the limit of coverage expressed in longitude."
+      },
+      "northCoord": {
+        "type": "number",
+        "title": "North Bounding Coordinate",
+        "description": "Northern-most coordinate of the limit of coverage expressed in latitude."
+      },
+      "southCoord": {
+        "type": "number",
+        "title": "South Bounding Coordinate",
+        "description": "Southern-most coordinate of the limit of coverage expressed in latitude."
+      },
+      "satellite": {
+        "type": "string",
+        "title": "Satellite",
+        "description": "Name of the vehicle or program hosting the instrument. e.g. Landsat, Terra"
+      },
+      "sensor": {
+        "type": "string",
+        "title": "Sensor",
+        "description": "Name of the instrument that captures the scene. e.g. Enhanced Thematic Mapper (ETM), MODIS, ASTER"
+      },
+      "bands": {
+        "type": "string",
+        "title": "Bands",
+        "description": "Number of spectral bands captured in a scene"
+      },
+      "spectralRange": {
+        "type": "string",
+        "title": "Spectral Range",
+        "description": "Range from the shortest wavelength to the longest"
+      },
+      "sceneSize": {
+        "type": "string",
+        "title": "Scene Size",
+        "description": "Dimensions of the image"
+      },
+      "sceneLocation": {
+        "type": "string",
+        "title": "Scene Location"
+      },
+      "pixelRes": {
+        "type": "number",
+        "title": "Pixel Resolution",
+        "description": "Size of the pixel"
+      },
+      "bitDepth": {
+        "type": "string",
+        "title": "Bit Depth",
+        "description": "Number of bits used for each pixel, E.g. 8bit, 16 bit"
+      },
+      "spatialRes": {
+        "type": "string",
+        "title": "Spatial Resolution (O)",
+        "description": "The level of detail of the dataset expressed as equivalent scale or ground distance"
+      },
+      "refSystem": {
+        "type": "string",
+        "title": "Reference System",
+        "description": "Is used to define the coordinate reference systems (CRS) and coordinate transformations which may be global, regional, national or local in application. This includes EPSG, CRS and other codes"
+      },
+      "webservIndex": {
+        "type": "string",
+        "title": "Web Service Index",
+        "description": "The webservice Index  for the maps"
+      }
+    },
+    "required": [
+      "mapProject",
+      "westCoord",
+      "eastCoord",
+      "northCoord",
+      "southCoord"
+    ]
+  }
+}

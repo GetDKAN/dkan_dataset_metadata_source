@@ -1,17 +1,8 @@
 [
   {
-    "name":"EML",
+    "name":"GeoSpatial Example",
     "weight":"0",
-    "uuid":"32d92b0e-85f6-4b0e-99f8-2b8faa7b457e"
-  },
-  {
-    "name":"ISA-Tab",
-    "weight":"0",
-    "uuid":"6fe6bb0b-de99-4a51-9aa6-55fa9ec95b55"
-  },
-  {
-    "name":"ISO 19115-2",
-    "weight":"0",
-    "uuid":"46f68c34-01cb-445b-8ac7-5f96dca658ae"
+    "file": [{ "file": "GeoSpatial_Schema.json"}],
+    "uuid":"6fe6bb0b-de99-4a52-9aa6-55fa9ec95b55"
   }
 ]

@@ -13,9 +13,10 @@ function dkan_dataset_metadata_source_example_metadata_taxonomy_sources() {
   $map =  array(
     'name' => 'name',
     'weight' => 'weight',
+    'field_metadata_json_schema_file' => 'file',
   );
   return array(
-    'taxonomy_machine_name' => array(
+    'extended_metadata_schema' => array(
       'export_path' => $module_path . '/data',
       'map' => $map,
     ),

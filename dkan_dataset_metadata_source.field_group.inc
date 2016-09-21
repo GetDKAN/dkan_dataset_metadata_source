@@ -20,19 +20,18 @@ function dkan_dataset_metadata_source_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_metadata_type';
   $field_group->data = array(
-    'label' => 'Metadata File',
+    'label' => 'Add Metadata',
     'weight' => '11',
     'children' => array(
-      0 => 'field_metadata_file',
+      0 => 'field_metadata_json',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'label' => 'Metadata File',
+      'label' => 'Add Metadata',
       'instance_settings' => array(
         'required_fields' => 0,
-        'id' => 'file',
         'classes' => 'group-metadata-file field-group-htab',
-        'description' => '',
+        'description' => 'Create new metadata file.',
       ),
       'formatter' => 'open',
     ),
@@ -51,9 +50,7 @@ function dkan_dataset_metadata_source_field_group_info() {
   $field_group->data = array(
     'label' => 'Metadata JSON Schema',
     'weight' => '10',
-    'children' => array(
-      0 => 'field_metadata_json_schema',
-    ),
+    'children' => array(),
     'format_type' => 'htab',
     'format_settings' => array(
       'label' => 'Metadata JSON Schema',
@@ -78,19 +75,19 @@ function dkan_dataset_metadata_source_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_metadata_type';
   $field_group->data = array(
-    'label' => 'Metadata Link',
+    'label' => 'Link Metadata',
     'weight' => '12',
     'children' => array(
-      0 => 'field_metadata_view',
+      0 => 'field_metadata_file',
+      1 => 'field_metadata_view',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'label' => 'Metadata Link',
+      'label' => 'Link Metadata',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => 'view',
         'classes' => 'group-metadata-link field-group-htab',
-        'description' => '',
+        'description' => 'Link to or upload an existing metadata file.',
       ),
       'formatter' => 'closed',
     ),
@@ -108,7 +105,7 @@ function dkan_dataset_metadata_source_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Metadata Type',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'group_metadata_json_schema',
       1 => 'group_metadata_file',
@@ -127,9 +124,9 @@ function dkan_dataset_metadata_source_field_group_info() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Metadata File');
+  t('Add Metadata');
+  t('Link Metadata');
   t('Metadata JSON Schema');
-  t('Metadata Link');
   t('Metadata Type');
 
   return $field_groups;

@@ -69,7 +69,7 @@ function dkan_dataset_metadata_source_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '4',
         ),
       ),
       'display' => array(),

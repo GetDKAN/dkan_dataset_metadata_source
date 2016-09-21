@@ -99,7 +99,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'apply_chosen' => 1,
       ),
       'type' => 'options_select',
-      'weight' => 6,
+      'weight' => 3,
     ),
   );
 
@@ -176,8 +176,8 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-metadata-field_metadata_json_schema'.
-  $field_instances['node-metadata-field_metadata_json_schema'] = array(
+  // Exported field_instance: 'node-metadata-field_metadata_json'.
+  $field_instances['node-metadata-field_metadata_json'] = array(
     'bundle' => 'metadata',
     'default_value' => NULL,
     'deleted' => 0,
@@ -204,8 +204,8 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_metadata_json_schema',
-    'label' => 'JSON Schema',
+    'field_name' => 'field_metadata_json',
+    'label' => 'Create Metadata',
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
@@ -227,7 +227,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'bundle' => 'metadata',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'First select a schema for your metadata. ',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -264,7 +264,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 5,
+      'weight' => 1,
     ),
   );
 
@@ -326,17 +326,82 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 13,
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-extended_metadata_schema-field_metadata_json_schema_file'.
+  $field_instances['taxonomy_term-extended_metadata_schema-field_metadata_json_schema_file'] = array(
+    'bundle' => 'extended_metadata_schema',
+    'deleted' => 0,
+    'description' => 'Option JSON schema file.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_metadata_json_schema_file',
+    'label' => 'JSON Schema File',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'json',
+      'max_filesize' => '',
+      'resup' => 0,
+      'resup_autostart' => 0,
+      'resup_max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'filefield_sources' => array(
+          'filefield_sources' => array(
+            'attach' => 0,
+            'clipboard' => 0,
+            'reference' => 0,
+            'remote' => 0,
+            'remotefile' => 0,
+            'upload' => 'upload',
+          ),
+          'source_attach' => array(
+            'absolute' => 0,
+            'attach_mode' => 'move',
+            'path' => 'file_attach',
+          ),
+          'source_imce' => array(
+            'imce_mode' => 0,
+          ),
+          'source_reference' => array(
+            'autocomplete' => 0,
+            'search_all_fields' => 0,
+          ),
+        ),
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 31,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Create Metadata');
   t('Dataset');
-  t('JSON Schema');
+  t('First select a schema for your metadata. ');
+  t('JSON Schema File');
   t('Metadata File');
   t('Metadata Sources');
   t('Metadata View');
+  t('Option JSON schema file.');
   t('Schema');
 
   return $field_instances;
