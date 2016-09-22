@@ -25,7 +25,6 @@ features[field_base][] = field_metadata_schema
 features[field_base][] = field_metadata_sources
 features[field_base][] = field_metadata_view
 features[field_group][] = group_metadata_file|node|metadata|form
-features[field_group][] = group_metadata_json_schema|node|metadata|form
 features[field_group][] = group_metadata_link|node|metadata|form
 features[field_group][] = group_metadata_type|node|metadata|form
 features[field_instance][] = node-dataset-field_metadata_sources
