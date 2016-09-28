@@ -139,58 +139,95 @@ function dkan_dataset_metadata_source_taxonomy_fixtures_vocabulary() {
  */
 function dkan_dataset_metadata_source_field_attach_validate($entity_type, $entity, &$errors) {
   if ($entity_type == 'node' && $entity->type == 'metadata') {
-    // JSON Metadata validation.
-    $entity_mw = entity_metadata_wrapper('node', $entity);
-    $field_name = 'field_metadata_json';
-    $langcode = $entity->language;
-    $delta = 0;
+    // Validate the field_metadata_json.
+    dkan_dataset_metadata_source_field_attach_validate_field_metadata_json($entity_type, $entity, $errors);
+  }
+}
 
-    // Get the Schema
-    $metadata_schema = $entity_mw->field_metadata_schema->value();
-    if (!isset($metadata_schema)) {
-      $errors['field_metadata_schema'][$langcode][$delta][] = array(
-        'error' => 'dkan_dataset_metadata_source-missing_schema',
-        'message' => t("Schema missing."),
-      );
-      return;
-    }
+/**
+ * Helper function to validate field_metadata_json field on metadata node.
+ */
+function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json($entity_type, $entity, &$errors) {
+  // JSON Metadata validation.
+  $entity_mw = entity_metadata_wrapper('node', $entity);
+  $field_name = 'field_metadata_json';
+  $langcode = $entity->language;
+  $delta = 0;
 
-    $metadata_schema = entity_metadata_wrapper('taxonomy_term', $metadata_schema);
-    $metadata_schema_file = $metadata_schema->field_metadata_json_schema_file->raw();
+  // If The "field_metadata_json" is empty it may mean that the user is fill
+  // other field. Move on nothing to validate here.
+  $json = $entity_mw->field_metadata_json->value();
+  if (empty($json)) {
+    // Not really an error.
+    return;
+  }
 
-    if (empty($metadata_schema_file) || empty($metadata_schema_file['uri'])) {
-      $errors[$field_name][$langcode][$delta][] = array(
-        'error' => 'dkan_dataset_metadata_source-missing_schema_file',
-        'message' => t("Schema file not found."),
-      );
-      return;
-    }
+  // Get the Schema. The field_metadata_schema field is required so no need to
+  // check for it's existence.
+  $metadata_schema = $entity_mw->field_metadata_schema->value();
 
-    $metadata_schema_file_uri = $metadata_schema_file['uri'];
+  // Get the Schema file uri.
+  $metadata_schema = entity_metadata_wrapper('taxonomy_term', $metadata_schema);
+  $metadata_schema_file = $metadata_schema->field_metadata_json_schema_file->raw();
 
-    // Get the data to validate
-    $json = $entity_mw->field_metadata_json->value();
-    $data = json_decode($json);
-    // Validate the json user input.
-    if (json_last_error() !== JSON_ERROR_NONE) {
-      $errors[$field_name][$langcode][$delta][] = array(
-        'error' => 'dkan_dataset_metadata_source-json_input_not_valid',
-        'message' => t("JSON Metadata not valid."),
-      );
-      return;
-    }
+  if (empty($metadata_schema_file) || empty($metadata_schema_file['uri'])) {
+    $errors['field_metadata_schema'][$langcode][$delta][] = array(
+      'error' => 'dkan_dataset_metadata_source-missing_schema_file',
+      'message' => t("@metadata_title Schema is missing JsonSchema file.",
+        array('@metadata_title' => $metadata_schema->name->value(array('sanitize' => TRUE)))
+      ),
+    );
+    return;
+  }
 
+  $metadata_schema_file_uri = $metadata_schema_file['uri'];
+
+  // Run the json throu validation.
+  $validation_errors = dkan_dataset_metadata_source_validate_jsonschema($json, $metadata_schema_file_uri);
+  if (!empty($validation_errors)) {
+    $errors[$field_name][$langcode][$delta] = $validation_errors;
+  }
+}
+
+/**
+ * Validate JSON string against a jsonSchema file.
+ *
+ * @param $json_string
+ * @param $jsonSchema_file_uri
+ *
+ * @return $errors Array similarly keyed to the $errors array used in
+ * hook_field_attach_validate().
+ */
+function dkan_dataset_metadata_source_validate_jsonschema($json_string, $jsonSchema_file_uri) {
+  $errors = array();
+
+  // Get the data to validate
+  $data = json_decode($json_string);
+
+  // Validate the json string.
+  if (json_last_error() !== JSON_ERROR_NONE) {
+   $errors[] = array(
+      'error' => 'dkan_dataset_metadata_source-json_input_not_valid',
+      'message' => t("JSON Metadata not valid."),
+    );
+  }
+  else {
     // Validate user input against the schema.
     $validator = new JsonSchema\Validator;
-    $validator->check($data, (object)['$ref' => $metadata_schema_file_uri]);
+    $validator->check($data, (object)['$ref' => $jsonSchema_file_uri]);
 
     if (!$validator->isValid()) {
       foreach ($validator->getErrors() as $jsonschema_error) {
-        $errors[$field_name][$langcode][$delta][] = array(
+        $errors[] = array(
           'error' => 'dkan_dataset_metadata_source-' . $jsonschema_error['property'],
-          'message' => $jsonschema_error['property'] . ': ' . $jsonschema_error['message'],
+          'message' => t("@property: Error, @message.", array(
+            '@property' => $jsonschema_error['property'],
+            '@message' => $jsonschema_error['message'])
+          ),
         );
       }
     }
   }
+
+  return $errors;
 }
