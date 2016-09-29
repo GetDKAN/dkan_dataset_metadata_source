@@ -87,7 +87,7 @@ function dkan_dataset_metadata_source_field_default_field_bases() {
       'max_length' => 255,
     ),
     'translatable' => 0,
-    'type' => 'text',
+    'type' => 'longtext',
   );
 
   // Exported field_base: 'field_metadata_json_schema_file'.

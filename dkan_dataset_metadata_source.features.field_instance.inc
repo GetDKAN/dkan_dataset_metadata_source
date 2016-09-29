@@ -217,7 +217,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'settings' => array(
         'size' => 60,
       ),
-      'type' => 'text_textfield',
+      'type' => 'text_textarea',
       'weight' => 3,
     ),
   );
