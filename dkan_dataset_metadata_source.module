@@ -162,6 +162,18 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
     return;
   }
 
+  // Get the data to validate.
+  $json_array = drupal_json_decode($json);
+
+  // Validate the json string.
+  if (json_last_error() !== JSON_ERROR_NONE) {
+   $errors[$field_name][$langcode][$delta][] = array(
+      'error' => 'dkan_dataset_metadata_source-json_input_not_valid',
+      'message' => t("JSON Metadata not valid."),
+    );
+   return;
+  }
+
   // Get the Schema. The field_metadata_schema field is required so no need to
   // check for it's existence.
   $metadata_schema = $entity_mw->field_metadata_schema->value();
@@ -181,9 +193,10 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
   }
 
   $metadata_schema_file_uri = $metadata_schema_file['uri'];
+  $jsonSchema_array = drupal_json_decode(file_get_contents($metadata_schema_file_uri));
 
   // Run the json throu validation.
-  $validation_errors = dkan_dataset_metadata_source_validate_jsonschema($json, $metadata_schema_file_uri);
+  $validation_errors = dkan_dataset_metadata_source_validate_jsonschema($json_array, $jsonSchema_array);
   if (!empty($validation_errors)) {
     $errors[$field_name][$langcode][$delta] = $validation_errors;
   }
@@ -192,40 +205,28 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
 /**
  * Validate JSON string against a jsonSchema file.
  *
- * @param $json_string
- * @param $jsonSchema_file_uri
+ * @param $json_array
+ * @param $jsonSchema_array
  *
  * @return $errors Array similarly keyed to the $errors array used in
  * hook_field_attach_validate().
  */
-function dkan_dataset_metadata_source_validate_jsonschema($json_string, $jsonSchema_file_uri) {
+function dkan_dataset_metadata_source_validate_jsonschema($json_array, $jsonSchema_array) {
   $errors = array();
 
-  // Get the data to validate
-  $data = json_decode($json_string);
+  // Validate user input against the schema.
+  $validator = new JsonSchema\Validator;
+  $validator->check($json_array, $jsonSchema_array);
 
-  // Validate the json string.
-  if (json_last_error() !== JSON_ERROR_NONE) {
-   $errors[] = array(
-      'error' => 'dkan_dataset_metadata_source-json_input_not_valid',
-      'message' => t("JSON Metadata not valid."),
-    );
-  }
-  else {
-    // Validate user input against the schema.
-    $validator = new JsonSchema\Validator;
-    $validator->check($data, (object)['$ref' => $jsonSchema_file_uri]);
-
-    if (!$validator->isValid()) {
-      foreach ($validator->getErrors() as $jsonschema_error) {
-        $errors[] = array(
-          'error' => 'dkan_dataset_metadata_source-' . $jsonschema_error['property'],
-          'message' => t("@property: Error, @message.", array(
-            '@property' => $jsonschema_error['property'],
-            '@message' => $jsonschema_error['message'])
-          ),
-        );
-      }
+  if (!$validator->isValid()) {
+    foreach ($validator->getErrors() as $jsonschema_error) {
+      $errors[] = array(
+        'error' => 'dkan_dataset_metadata_source-' . $jsonschema_error['property'],
+        'message' => t("@property: Error, @message.", array(
+          '@property' => $jsonschema_error['property'],
+          '@message' => $jsonschema_error['message'])
+        ),
+      );
     }
   }
 
