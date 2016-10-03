@@ -15,8 +15,12 @@ function dkan_dataset_metadata_source_libraries_info() {
     'name' => 'Justinrainbow JSON-Schema',
     'vendor url' => 'https://github.com/justinrainbow/json-schema.git',
     'download url' => 'https://github.com/justinrainbow/json-schema/tree/master/src/JsonSchema',
-    'version' => 'master',
-    'files' => array(),
+    'version' => '3.0.1',
+    'files' => array(
+      'php' => array(
+        'vendor/autoload.php',
+      ),
+    ),
   );
 
   return $libraries;
