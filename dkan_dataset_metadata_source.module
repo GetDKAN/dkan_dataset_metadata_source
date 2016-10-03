@@ -15,8 +15,12 @@ function dkan_dataset_metadata_source_libraries_info() {
     'name' => 'Justinrainbow JSON-Schema',
     'vendor url' => 'https://github.com/justinrainbow/json-schema.git',
     'download url' => 'https://github.com/justinrainbow/json-schema/tree/master/src/JsonSchema',
-    'version' => 'master',
-    'files' => array(),
+    'version' => '3.0.1',
+    'files' => array(
+      'php' => array(
+        'vendor/autoload.php',
+      ),
+    ),
   );
 
   return $libraries;
@@ -205,18 +209,19 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
 /**
  * Validate JSON string against a jsonSchema file.
  *
- * @param $json_array
- * @param $jsonSchema_array
+ * @param $json_object It expects this to be result of a json_decode.
+ * @param $jsonSchema_uri The uri of the jsonSchema file, string expected.
  *
  * @return $errors Array similarly keyed to the $errors array used in
  * hook_field_attach_validate().
  */
-function dkan_dataset_metadata_source_validate_jsonschema($json_array, $jsonSchema_array) {
+function dkan_dataset_metadata_source_validate_jsonschema($json_object, $jsonSchema_uri) {
   $errors = array();
+  libraries_load('json-schema');
 
   // Validate provided json against the schema.
   $validator = new JsonSchema\Validator;
-  $validator->check($json_array, $jsonSchema_array);
+  $validator->check($json_object, (object)['$ref' => $jsonSchema_uri]);
 
   if (!$validator->isValid()) {
     foreach ($validator->getErrors() as $jsonschema_error) {
