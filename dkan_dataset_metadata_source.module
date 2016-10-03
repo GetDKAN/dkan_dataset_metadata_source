@@ -231,11 +231,4 @@ function dkan_dataset_metadata_source_validate_jsonschema($json_array, $jsonSche
   }
 
   return $errors;
-          ),
-        );
-      }
-    }
-  }
-
-  return $errors;
 }

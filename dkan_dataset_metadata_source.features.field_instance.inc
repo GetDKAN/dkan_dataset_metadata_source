@@ -215,7 +215,7 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'size' => 60,
+        'rows' => 5,
       ),
       'type' => 'text_textarea',
       'weight' => 3,
