@@ -12,6 +12,12 @@ function dkan_dataset_metadata_source_theme() {
     'dkan_dataset_metadata_source_view' => array(
       'variables' => array('node' => NULL),
     ),
+    'json_schema' => array(
+      'variables' => array(
+        'json_array' => NULL,
+        'jsonSchema_array' => NULL,
+      ),
+    ),
   );
   return $theme;
 }
@@ -113,3 +119,77 @@ function theme_dkan_dataset_metadata_source_view($vars) {
   }
 }
 
+/**
+ * @vars expected variables:
+ * - json_array
+ * - jsonSchema_array
+ */
+function theme_json_schema($vars) {
+  $json_array = $vars['json_array'];
+  $jsonSchema_array = $vars['jsonSchema_array'];
+
+  //Get the jsonSchema id
+  $jsonSchema_id = $jsonSchema_array['id'];
+  $jsonSchema_id = preg_replace('@[^a-z0-9-]+@', '_', strtolower($jsonSchema_id));
+
+  // Get array of available theme hooks.
+  $theme_hooks = theme_get_registry(TRUE);
+  $theme_hooks = array_map(function ($theme_hook) {
+    return isset($theme_hook['function']) ? $theme_hook['function'] : FALSE;;
+    }, $theme_hooks
+  );
+  $theme_hooks = array_filter($theme_hooks);
+
+  // Is there any theme that wants to take over this particular jsonSchema?
+  // Lookup the theme registry for any.
+  $theme_hook_grep = '@^' . 'theme_(.*)_' . $jsonSchema_id . '$@';
+  $theme_hooks_matched = preg_grep($theme_hook_grep, $theme_hooks);
+  if (!empty($theme_hooks_matched)) {
+    // We found a theme function that overrides the passed jsonSchema.
+    $theme_hook_selected = array_pop($theme_hooks_matched);
+    return call_user_func($theme_hook_selected, $vars);
+  }
+
+  // We will need the properties array a lot.
+  $jsonSchema_properties = $jsonSchema_array['properties'];
+
+  // Construct rows from json data and the associated jsonSchema.
+  $rows = array();
+  foreach ($json_array as $property_name => $property_value) {
+    $row = array();
+    $property_info = $jsonSchema_properties[$property_name];
+    $row[] = array(
+      'header' => TRUE,
+      'data' => $property_info['title'],
+    );
+
+    // Is there any theme that wants to take over this particular jsonSchema property?
+    // Lookup the theme registry for any.
+    $theme_hook_grep = '@^' . 'theme_(.*)_' . $jsonSchema_id . '_' . $property_name . '$@';
+    $theme_hooks_matched = preg_grep($theme_hook_grep, $theme_hooks);
+    // Use property specific theme if any.
+    if (!empty($theme_hooks_matched)) {
+      // We found a theme function that overrides the passed jsonSchema.
+      $theme_hook_selected = array_pop($theme_hooks_matched);
+      $row[] = call_user_func($theme_hook_selected, $vars);
+    }
+    else {
+      $row[] = $property_value;
+    }
+
+    $rows[] = $row;
+  }
+
+  $metadata_source_json = array(
+    '#theme' => 'table',
+    '#header' => array(),
+    '#rows' => $rows,
+    '#attributes' => array(
+      'class' => array(
+        'test-class',
+      ),
+    )
+  );
+
+  return drupal_render($metadata_source_json);
+}

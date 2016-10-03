@@ -43,3 +43,20 @@ function hook_metadata_taxonomy_sources() {
   );
 }
 
+/**
+ * Theme function to override the display of the json-schema with id
+ * "wbddh.com/geospatial_schema", all the special characters are replaced with
+ * underscores.
+ */
+function theme_dkan_dataset_metadata_source_wbddh_com_geospatial_schema($vars) {
+  return '<div>' . "Return HTML override the entire json-schema here." . '<\div>';
+}
+
+/**
+ * Theme function to override the display of the json-schema property named
+ * "mapProject" within the schema id "wbddh.com/geospatial_schema", all the
+ * special characters are replaced with underscores.
+ */
+function dkan_dataset_metadata_source_wbddh_com_geospatial_schema_mapProject($vars) {
+  return '<div>' . "Return HTML override for the json-schema property here." . '<\div>';
+}
