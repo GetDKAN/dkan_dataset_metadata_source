@@ -94,11 +94,14 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
+      'module' => 'entityreference',
       'settings' => array(
         'apply_chosen' => 1,
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
       ),
-      'type' => 'options_select',
+      'type' => 'entityreference_autocomplete',
       'weight' => 3,
     ),
   );
@@ -185,9 +188,9 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
+        'module' => 'dkan_dataset_metadata_source',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'dkan_dataset_metadata_source_json',
         'weight' => 6,
       ),
       'search_result' => array(
