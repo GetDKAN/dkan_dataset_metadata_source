@@ -11,17 +11,23 @@ include_once 'dkan_dataset_metadata_source.theme.inc';
  * Implements hook_libraries_info().
  */
 function dkan_dataset_metadata_source_libraries_info() {
-  $libraries['json-schema'] = array(
-    'name' => 'Justinrainbow JSON-Schema',
-    'vendor url' => 'https://github.com/justinrainbow/json-schema.git',
-    'download url' => 'https://github.com/justinrainbow/json-schema/tree/master/src/JsonSchema',
-    'version' => '3.0.1',
-    'files' => array(
-      'php' => array(
-        'vendor/autoload.php',
+  $libraries= array();
+  $libname = 'json-schema';
+
+  // Check library existance before adding it's declaration.
+  if (($library = libraries_detect($libname)) && !empty($library['installed'])) {
+    $libraries[$libname] = array(
+      'name' => 'Justinrainbow JSON-Schema',
+      'vendor url' => 'https://github.com/justinrainbow/json-schema.git',
+      'download url' => 'https://github.com/justinrainbow/json-schema/tree/master/src/JsonSchema',
+      'version' => '1.3.7',
+      'files' => array(
+        'php' => array(
+          'vendor/autoload.php',
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   return $libraries;
 }
@@ -155,7 +161,7 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
   // JSON Metadata validation.
   $entity_mw = entity_metadata_wrapper('node', $entity);
   $field_name = 'field_metadata_json';
-  $langcode = $entity->language;
+  $langcode = LANGUAGE_NONE;
   $delta = 0;
 
   // If The "field_metadata_json" is empty it may mean that the user is fill
@@ -165,9 +171,6 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
     // Not really an error.
     return;
   }
-
-  // Get the data to validate.
-  $json_array = drupal_json_decode($json);
 
   // Validate the json string.
   if (json_last_error() !== JSON_ERROR_NONE) {
@@ -197,10 +200,9 @@ function dkan_dataset_metadata_source_field_attach_validate_field_metadata_json(
   }
 
   $metadata_schema_file_uri = $metadata_schema_file['uri'];
-  $jsonSchema_array = drupal_json_decode(file_get_contents($metadata_schema_file_uri));
 
   // Run the json throu validation.
-  $validation_errors = dkan_dataset_metadata_source_validate_jsonschema($json_array, $jsonSchema_array);
+  $validation_errors = dkan_dataset_metadata_source_validate_jsonschema(json_decode($json, FALSE), $metadata_schema_file_uri);
   if (!empty($validation_errors)) {
     $errors[$field_name][$langcode][$delta] = $validation_errors;
   }
@@ -219,22 +221,31 @@ function dkan_dataset_metadata_source_validate_jsonschema($json_object, $jsonSch
   $errors = array();
   libraries_load('json-schema');
 
-  // Validate provided json against the schema.
-  $validator = new JsonSchema\Validator;
-  $validator->check($json_object, (object)['$ref' => $jsonSchema_uri]);
+  try {
+    $retriever = new JsonSchema\Uri\UriRetriever;
+    $schema = $retriever->retrieve($jsonSchema_uri);
 
-  if (!$validator->isValid()) {
-    foreach ($validator->getErrors() as $jsonschema_error) {
-      $errors[] = array(
-        'error' => 'dkan_dataset_metadata_source-' . $jsonschema_error['property'],
-        'message' => t("@property: Error, @message.", array(
-          '@property' => $jsonschema_error['property'],
-          '@message' => $jsonschema_error['message'])
-        ),
-      );
+    $validator = new JsonSchema\Validator();
+    $validator->check($json_object, $schema);
+
+    if (!$validator->isValid()) {
+      foreach ($validator->getErrors() as $jsonschema_error) {
+        $errors[] = array(
+          'error' => 'dkan_dataset_metadata_source-' . $jsonschema_error['property'],
+          'message' => t("@property: Error, @message.", array(
+            '@property' => $jsonschema_error['property'],
+            '@message' => $jsonschema_error['message'])
+          ),
+        );
+      }
     }
   }
-
+  catch (\Exception $exception) {
+    $errors[] = array(
+      'error' => 'dkan_dataset_metadata_source-validation-exception',
+      'message' => 'Validation failed with exception: ' . $exception->getMessage(),
+    );
+  }
   return $errors;
 }
 
