@@ -8,6 +8,16 @@ include_once 'dkan_dataset_metadata_source.features.inc';
 include_once 'dkan_dataset_metadata_source.theme.inc';
 
 /**
+ * Implements hook_entity_info_alter().
+ */
+function dkan_dataset_metadata_source_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['dataset_full'] = array(
+    'label' => t('Dataset Page'),
+    'custom settings' => TRUE,
+  );
+}
+
+/**
  * Implements hook_libraries_info().
  */
 function dkan_dataset_metadata_source_libraries_info() {
