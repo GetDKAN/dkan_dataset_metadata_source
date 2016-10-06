@@ -27,3 +27,8 @@ To create a new ``Metadata Type`` visit ``node/add/metadata``:
 Once a ``Metadata Type`` has been created the Metadata Source will be displayed on the linked ``Datasets``:
 
 <img width="446" alt="Metadata Source on node view" src="https://cloud.githubusercontent.com/assets/512243/9552388/3d15af2e-4d7d-11e5-9d51-2304bf03c59f.png">
+
+## JSON Schema Support
+
+### Rendering
+TODO

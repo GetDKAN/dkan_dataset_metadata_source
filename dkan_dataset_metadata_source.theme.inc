@@ -12,6 +12,13 @@ function dkan_dataset_metadata_source_theme() {
     'dkan_dataset_metadata_source_view' => array(
       'variables' => array('node' => NULL),
     ),
+    'dkan_dataset_json_schema' => array(
+      'variables' => array(
+        'json_array' => NULL,
+        'jsonSchema_array' => NULL,
+        'jsonSchema_id' => NULL,
+      ),
+    ),
   );
   return $theme;
 }
@@ -113,3 +120,42 @@ function theme_dkan_dataset_metadata_source_view($vars) {
   }
 }
 
+/**
+ * @vars expected variables:
+ * - json_array
+ * - jsonSchema_array
+ */
+function theme_dkan_dataset_json_schema($vars) {
+  $json_array = $vars['json_array'];
+  $jsonSchema_array = $vars['jsonSchema_array'];
+
+  // We will need the properties array a lot.
+  $jsonSchema_properties = $jsonSchema_array['properties'];
+
+  // Construct rows from json data and the associated jsonSchema.
+  $rows = array();
+  foreach ($json_array as $property_name => $property_value) {
+    $row = array();
+    $property_info = $jsonSchema_properties[$property_name];
+    $row[] = array(
+      'header' => TRUE,
+      'data' => $property_info['title'],
+    );
+
+    $row[] = $property_value;
+    $rows[] = $row;
+  }
+
+  $metadata_source_json = array(
+    '#theme' => 'table',
+    '#header' => array(),
+    '#rows' => $rows,
+    '#attributes' => array(
+      'class' => array(
+        'test-class',
+      ),
+    )
+  );
+
+  return drupal_render($metadata_source_json);
+}

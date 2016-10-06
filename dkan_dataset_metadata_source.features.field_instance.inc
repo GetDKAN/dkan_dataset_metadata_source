@@ -17,6 +17,12 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'default' => array(
         'label' => 'above',
         'settings' => array(),
@@ -63,6 +69,12 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
       'default' => array(
         'label' => 'above',
         'module' => 'entityreference',
@@ -94,11 +106,14 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'options',
+      'module' => 'entityreference',
       'settings' => array(
         'apply_chosen' => 1,
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
       ),
-      'type' => 'options_select',
+      'type' => 'entityreference_autocomplete',
       'weight' => 3,
     ),
   );
@@ -109,6 +124,15 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'hidden',
+        'module' => 'file_entity',
+        'settings' => array(
+          'file_view_mode' => 'default',
+        ),
+        'type' => 'file_rendered',
+        'weight' => 3,
+      ),
       'default' => array(
         'label' => 'above',
         'module' => 'file',
@@ -183,11 +207,18 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'hidden',
+        'module' => 'dkan_dataset_metadata_source',
+        'settings' => array(),
+        'type' => 'dkan_dataset_metadata_source_json',
+        'weight' => 2,
+      ),
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
+        'module' => 'dkan_dataset_metadata_source',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'dkan_dataset_metadata_source_json',
         'weight' => 6,
       ),
       'search_result' => array(
@@ -215,9 +246,9 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'size' => 60,
+        'rows' => 5,
       ),
-      'type' => 'text_textfield',
+      'type' => 'text_textarea',
       'weight' => 3,
     ),
   );
@@ -229,6 +260,13 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => 'First select a schema for your metadata. ',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 0,
+      ),
       'default' => array(
         'label' => 'above',
         'module' => 'taxonomy',
@@ -275,6 +313,13 @@ function dkan_dataset_metadata_source_field_default_field_instances() {
     'deleted' => 0,
     'description' => '',
     'display' => array(
+      'dataset_full' => array(
+        'label' => 'hidden',
+        'module' => 'link',
+        'settings' => array(),
+        'type' => 'link_url',
+        'weight' => 1,
+      ),
       'default' => array(
         'label' => 'above',
         'module' => 'link',
