@@ -90,7 +90,9 @@ function dkan_dataset_metadata_source_form_alter(&$form, &$form_state, $form_id)
     if ($query = drupal_get_query_parameters()) {
       $field_dataset_ref_langcode = dkan_dataset_form_field_language($form, 'field_dataset_metadata_ref');
       if (isset($query['dataset'])) {
-        $form['field_dataset_metadata_ref'][$field_dataset_ref_langcode]['#default_value'] = $query['dataset'];
+        if ($dataset = node_load($query['dataset'])) {
+          $form['field_dataset_metadata_ref'][$field_dataset_ref_langcode][0]['target_id']['#default_value'] = "$dataset->title ($dataset->nid)";
+        }
         $form['actions']['submit']['#submit'][] = 'dkan_dataset_metadata_metadata_node_form_submit';
       }
     }
@@ -301,11 +303,12 @@ function dkan_dataset_metadata_source_field_formatter_view($entity_type, $entity
       // BUild the render array.
       $element[$delta] = array(
         // Theme
-        '#theme' => 'json_schema',
+        '#theme' => 'dkan_dataset_json_schema',
         // Variables.
         '#metadata_node' => $entity,
         '#json_array' => $json_array,
         '#jsonSchema_array' => $jsonSchema_array,
+        '#jsonSchema_id' => $jsonSchema_array['id'],
         // #pre_render array constructed earlier
         '#pre_render' => $pre_render,
         // Varius render array parameters.
