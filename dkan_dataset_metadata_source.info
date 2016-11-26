@@ -3,6 +3,7 @@ core = 7.x
 package = DKAN
 version = 7.x-2.0
 project = dkan_dataset_metadata_source
+description = Add metadata source content type and metadata type vocabulary.
 dependencies[] = ctools
 dependencies[] = dkan_dataset_content_types
 dependencies[] = entityreference
