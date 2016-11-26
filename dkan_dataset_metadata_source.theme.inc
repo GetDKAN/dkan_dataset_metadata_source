@@ -22,7 +22,7 @@ function dkan_dataset_metadata_source_theme() {
  * @todo  Put CSS in separate file!
  */
 function theme_dkan_dataset_metadata_source_view($vars) {
-  $output = '<h2>' . t('Metadata Source') . '</h2>';
+  $output = '<h4>' . t('Metadata Source') . '</h4>';
   $node = entity_metadata_wrapper('node', $vars['node']);
   $sources = $node->field_metadata_sources->value();
   $links = array();
