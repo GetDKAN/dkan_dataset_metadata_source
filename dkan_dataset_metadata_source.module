@@ -31,7 +31,7 @@ function dkan_dataset_metadata_source_add_metadata_access($node) {
   if ($node->type != 'dataset') {
     return FALSE;
   }
-  elseif (node_hook($node->type, 'form') && node_access('create', $node->type)) {
+  elseif (node_hook($node->type, 'form') && node_access('update', $node)) {
     return TRUE;
   }
   else {
